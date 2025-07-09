@@ -14,6 +14,7 @@ public class Events
     public string _option7;
     public string _response;
     public string _event;
+    public DateTime _time;
     public DateTime _date;
 
     

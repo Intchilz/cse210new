@@ -5,7 +5,8 @@ public class Journal
     public string _fileName;
     public string _question;
     public string _FileContent;
-    public List<string> _entries = new List<string>();
+
+    public string _time;
 
     public string _date;
 
@@ -20,21 +21,11 @@ public class Journal
 
         using (FileStream fs = File.Create(fullPath))
         {
-            byte[] content = new System.Text.UTF8Encoding(true).GetBytes($"Date: {_date} - Prompt: {_question}\n {_FileContent}\n \n");
+            byte[] content = new System.Text.UTF8Encoding(true).GetBytes($"Date: {_date} - Prompt: {_question}\n {_FileContent}\n Entered at: {_time}\n \n");
             fs.Write(content, 0, content.Length);
 
         }
     }
-
-    //public void SaveFile()
-    //{
-        //string directory = @"C:\Users\lchil\OneDrive\Desktop\cse210new";
-        //string path = _fileName;
-        //string fullPath = Path.Combine(directory, path);
-        //using (FileStream fs = File.Create(fullPath))
-        //{ }
-
-    //}
 
     public void AppendToFile()
     {
@@ -42,7 +33,7 @@ public class Journal
         string FileName = _fileName;
 
         string fullPath = Path.Combine(directoryPath, FileName);
-        string newContent = $"Date: {_date} - Prompt: {_question}\n {_FileContent}\n \n";
+        string newContent = $"Date: {_date} - Prompt: {_question}\n {_FileContent}\n Entered at: {_time}\n \n";
 
         // Append text to the file
         File.AppendAllText(fullPath, newContent);
@@ -51,7 +42,11 @@ public class Journal
 
     public void LoadFromFile()
     {
-        string content = File.ReadAllText(_fileName);
+        string path = @"C:\Users\lchil\OneDrive\Desktop\cse210new";
+        string FileName = _fileName;
+        string fullPath = Path.Combine(path, FileName);
+
+        string content = File.ReadAllText(fullPath);
         Console.WriteLine(content);
     }
 

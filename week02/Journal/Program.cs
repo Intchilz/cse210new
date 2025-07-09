@@ -1,6 +1,8 @@
 using System;
 using System.Runtime.InteropServices;
 
+// Exceeded requirements: Save other information in the journal entry.
+// I'm adding the time the entry is made.
 class Program
 {
     static void Main(string[] args)
@@ -21,11 +23,13 @@ class Program
         event1._option6 = "What would you like to do? ";
         event1._response = "";
         event1._event = "";
-        event1._date = DateTime.Now;
+        event1._date = DateTime.UtcNow;
+        event1._time = DateTime.Now;
 
         Journal journal1 = new Journal();
         journal1._fileName = "original.txt";
         journal1._FileContent = "";
+        journal1._time = event1._time.ToShortTimeString();
         journal1._date = event1._date.ToShortDateString();
 
         event1.Display();
@@ -57,46 +61,46 @@ class Program
         }
 
         while (option != 5)
+        {
+            event1.Display();
+            Console.Write(event1._option6);
+            event1._response = Console.ReadLine();
+            option = int.Parse(event1._response);
+
+            if (option == 1)
             {
-                event1.Display();
-                Console.Write(event1._option6);
-                event1._response = Console.ReadLine();
-                option = int.Parse(event1._response);
+                randomprompt.RandomQuestion();
+                journal1._question = randomprompt._randomPrompt;
+                Console.WriteLine(randomprompt._randomPrompt);
+                event1._event = Console.ReadLine();
+                Console.WriteLine("");
+                journal1._FileContent = event1._event;
 
-                if (option == 1)
-                {
-                    randomprompt.RandomQuestion();
-                    journal1._question = randomprompt._randomPrompt;
-                    Console.WriteLine(randomprompt._randomPrompt);
-                    event1._event = Console.ReadLine();
-                    Console.WriteLine("");
-                    journal1._FileContent = event1._event;
-
-                    journal1.AppendToFile();
-                }
-                else if (option == 2)
-                {
-                    journal1.Read();
-                }
-                else if (option == 3)
-                {
-                    Console.WriteLine("What is the filename: ");
-                    journal1._fileName = Console.ReadLine();
-
-                    journal1.LoadFromFile();
-                }
-                else if (option == 4)
-                {
-                    Console.WriteLine("What is the filename: ");
-                    journal1._fileName = Console.ReadLine();
-
-                    journal1.createNewFile();
-                }
-
-                else
-                {
-                    Environment.Exit(0);
-                }
+                journal1.AppendToFile();
             }
+            else if (option == 2)
+            {
+                journal1.Read();
+            }
+            else if (option == 3)
+            {
+                Console.WriteLine("What is the filename: ");
+                journal1._fileName = Console.ReadLine();
+
+                journal1.LoadFromFile();
+            }
+            else if (option == 4)
+            {
+                Console.WriteLine("What is the filename: ");
+                journal1._fileName = Console.ReadLine();
+
+                journal1.createNewFile();
+            }
+
+            else
+            {
+                Environment.Exit(0);
+            }
+        }
     }
 }
